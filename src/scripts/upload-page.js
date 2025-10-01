@@ -29,7 +29,14 @@ uploadArea.addEventListener('drop', (e) => {
   e.preventDefault();
   uploadArea.classList.remove('drag-over');
   const file = e.dataTransfer.files[0];
-  if (file && (file.type.startsWith('image/') || file.name.toLowerCase().endsWith('.heic'))) {
+  const isHeic = file.name.toLowerCase().endsWith('.heic') || file.type === 'image/heic';
+
+  if (isHeic) {
+    alert('HEIC format is not supported. Please use JPG, PNG, WEBP, AVIF, GIF, or BMP.');
+    return;
+  }
+
+  if (file && file.type.startsWith('image/')) {
     handleFileSelect(file);
   }
 });
@@ -37,36 +44,35 @@ uploadArea.addEventListener('drop', (e) => {
 fileInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (file) {
+    const isHeic = file.name.toLowerCase().endsWith('.heic') || file.type === 'image/heic';
+
+    if (isHeic) {
+      alert('HEIC format is not supported. Please use JPG, PNG, WEBP, AVIF, GIF, or BMP.');
+      fileInput.value = '';
+      return;
+    }
+
     handleFileSelect(file);
   }
 });
 
 function handleFileSelect(file) {
   selectedFile = file;
+  const reader = new FileReader();
 
-  if (file.type === 'image/heic' || file.name.toLowerCase().endsWith('.heic')) {
-    previewImage.src = '';
-    const placeholder = document.createElement('div');
-    placeholder.style.cssText = 'padding: 40px; text-align: center; background: #2a2a2a; border-radius: 8px;';
-    placeholder.innerHTML = `<p>HEIC file selected: ${file.name}</p><p style="color: #a0a0a0; margin-top: 8px;">Preview not available (HEIC format)</p>`;
-    previewImage.style.display = 'none';
-    previewImage.parentNode.insertBefore(placeholder, previewImage);
+  reader.onload = (e) => {
+    previewImage.style.display = 'block';
+    previewImage.src = e.target.result;
     uploadArea.style.display = 'none';
     previewSection.style.display = 'block';
-  } else {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      previewImage.style.display = 'block';
-      previewImage.src = e.target.result;
-      uploadArea.style.display = 'none';
-      previewSection.style.display = 'block';
-    };
-    reader.onerror = (e) => {
-      console.error('Failed to read file:', e);
-      alert('Failed to read the file. Please try another image.');
-    };
-    reader.readAsDataURL(file);
-  }
+  };
+
+  reader.onerror = (e) => {
+    console.error('Failed to read file:', e);
+    alert('Failed to read the file. Please try another image.');
+  };
+
+  reader.readAsDataURL(file);
 }
 
 uploadBtn.addEventListener('click', async () => {

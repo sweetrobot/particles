@@ -31,27 +31,22 @@ export async function uploadImage(file) {
   let imgWidth = 800;
   let imgHeight = 600;
 
-  if (file.type === 'image/heic' || file.name.toLowerCase().endsWith('.heic')) {
-    imgWidth = 1024;
-    imgHeight = 768;
-  } else {
-    try {
-      const img = new Image();
-      await new Promise((resolve, reject) => {
-        img.onload = () => {
-          imgWidth = img.width;
-          imgHeight = img.height;
-          resolve();
-        };
-        img.onerror = () => {
-          console.warn('Could not load image for dimensions, using defaults');
-          resolve();
-        };
-        img.src = URL.createObjectURL(file);
-      });
-    } catch (e) {
-      console.warn('Error getting image dimensions:', e);
-    }
+  try {
+    const img = new Image();
+    await new Promise((resolve, reject) => {
+      img.onload = () => {
+        imgWidth = img.width;
+        imgHeight = img.height;
+        resolve();
+      };
+      img.onerror = () => {
+        console.warn('Could not load image for dimensions, using defaults');
+        resolve();
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  } catch (e) {
+    console.warn('Error getting image dimensions:', e);
   }
 
   const { data, error } = await supabase
