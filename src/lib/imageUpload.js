@@ -28,22 +28,41 @@ export async function uploadImage(file) {
     .from('particle-images')
     .getPublicUrl(filePath);
 
-  const img = new Image();
-  await new Promise((resolve, reject) => {
-    img.onload = resolve;
-    img.onerror = reject;
-    img.src = URL.createObjectURL(file);
-  });
+  let imgWidth = 800;
+  let imgHeight = 600;
+
+  if (file.type === 'image/heic' || file.name.toLowerCase().endsWith('.heic')) {
+    imgWidth = 1024;
+    imgHeight = 768;
+  } else {
+    try {
+      const img = new Image();
+      await new Promise((resolve, reject) => {
+        img.onload = () => {
+          imgWidth = img.width;
+          imgHeight = img.height;
+          resolve();
+        };
+        img.onerror = () => {
+          console.warn('Could not load image for dimensions, using defaults');
+          resolve();
+        };
+        img.src = URL.createObjectURL(file);
+      });
+    } catch (e) {
+      console.warn('Error getting image dimensions:', e);
+    }
+  }
 
   const { data, error } = await supabase
     .from('particle_images')
     .insert({
       title: file.name,
       original_url: publicUrl,
-      width: img.width,
-      height: img.height,
+      width: imgWidth,
+      height: imgHeight,
       file_size: file.size,
-      mime_type: file.type,
+      mime_type: file.type || 'image/jpeg',
       embed_code: embedCode
     })
     .select()
