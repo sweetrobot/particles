@@ -14,21 +14,36 @@ export default class Particles {
 	init(src) {
 		const loader = new THREE.TextureLoader();
 
-		loader.load(src, (texture) => {
-			this.texture = texture;
-			this.texture.minFilter = THREE.LinearFilter;
-			this.texture.magFilter = THREE.LinearFilter;
-			this.texture.format = THREE.RGBFormat;
+		console.log('Loading texture from:', src);
 
-			this.width = texture.image.width;
-			this.height = texture.image.height;
+		loader.load(
+			src,
+			(texture) => {
+				console.log('Texture loaded successfully:', texture.image.width, 'x', texture.image.height);
+				this.texture = texture;
+				this.texture.minFilter = THREE.LinearFilter;
+				this.texture.magFilter = THREE.LinearFilter;
+				this.texture.format = THREE.RGBFormat;
 
-			this.initPoints(true);
-			this.initHitArea();
-			this.initTouch();
-			this.resize();
-			this.show();
-		});
+				this.width = texture.image.width;
+				this.height = texture.image.height;
+
+				this.initPoints(true);
+				this.initHitArea();
+				this.initTouch();
+				this.resize();
+				this.show();
+			},
+			undefined,
+			(error) => {
+				console.error('Failed to load texture:', error);
+				console.error('Texture URL:', src);
+				const container = document.getElementById('particle-container');
+				if (container) {
+					container.innerHTML = '<div class="error"><p>Failed to load image texture</p><p style="font-size: 14px; margin-top: 10px;">This image format may not be supported by your browser.</p></div>';
+				}
+			}
+		);
 	}
 
 	initPoints(discard) {

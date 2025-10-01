@@ -13,13 +13,17 @@ async function init() {
   }
 
   try {
+    console.log('Loading image with embed code:', embedCode);
     const imageData = await getImageByEmbedCode(embedCode);
 
     if (!imageData) {
+      console.error('Image not found for embed code:', embedCode);
       container.innerHTML = '<div class="error"><p>Image not found</p></div>';
       return;
     }
 
+    console.log('Image data loaded:', imageData);
+    console.log('Image URL:', imageData.original_url);
     new ParticleRenderer(container, imageData.original_url);
   } catch (error) {
     console.error('Failed to load particle effect:', error);
