@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Particle Images</title>
+  <link rel="stylesheet" href="../static/css/app.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content">
+        <h1 class="logo">Particle Images</h1>
+        <nav class="nav">
+          <a href="/upload.html" class="nav-link">Upload</a>
+          <a href="/dashboard.html" class="nav-link active">Dashboard</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="dashboard-section">
+        <h2>Your Particle Images</h2>
+
+        <div id="loading" class="loading">
+          <div class="spinner"></div>
+          <p>Loading images...</p>
+        </div>
+
+        <div id="imagesGrid" class="images-grid"></div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+          <p>No images uploaded yet</p>
+          <a href="/upload.html" class="btn btn-primary">Upload Your First Image</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <h3 id="modalTitle"></h3>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script type="module" src="../scripts/dashboard-page.js"></script>
+</body>
+</html>

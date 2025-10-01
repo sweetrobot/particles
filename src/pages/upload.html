@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Particle Image</title>
+  <link rel="stylesheet" href="../static/css/app.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content">
+        <h1 class="logo">Particle Images</h1>
+        <nav class="nav">
+          <a href="/upload.html" class="nav-link active">Upload</a>
+          <a href="/dashboard.html" class="nav-link">Dashboard</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="upload-section">
+        <h2>Upload Your Image</h2>
+        <p class="subtitle">Transform your images into interactive particle effects</p>
+
+        <div class="upload-area" id="uploadArea">
+          <input type="file" id="fileInput" accept="image/jpeg,image/jpg,image/png,image/webp,image/avif,image/heic" hidden>
+          <div class="upload-prompt">
+            <svg class="upload-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <p class="upload-text">Click to upload or drag and drop</p>
+            <p class="upload-hint">JPG, PNG, WEBP, AVIF, HEIC</p>
+          </div>
+        </div>
+
+        <div id="previewSection" class="preview-section" style="display: none;">
+          <h3>Preview</h3>
+          <img id="previewImage" class="preview-image" alt="Preview">
+          <button id="uploadBtn" class="btn btn-primary">Upload & Generate</button>
+        </div>
+
+        <div id="successSection" class="success-section" style="display: none;">
+          <div class="success-icon">✓</div>
+          <h3>Upload Successful!</h3>
+          <p>Your particle effect has been created</p>
+
+          <div class="embed-code-section">
+            <h4>Embed Code</h4>
+            <textarea id="embedCode" class="embed-code" readonly></textarea>
+            <button id="copyBtn" class="btn btn-secondary">Copy Code</button>
+          </div>
+
+          <div class="action-buttons">
+            <a id="viewLink" class="btn btn-primary" target="_blank">View Particle Effect</a>
+            <button id="uploadAnother" class="btn btn-outline">Upload Another</button>
+          </div>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>Processing your image...</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="../scripts/upload-page.js"></script>
+</body>
+</html>

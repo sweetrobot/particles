@@ -9,6 +9,9 @@ const __root = path.resolve(__dirname, '../');
 module.exports = {
 	entry: {
 		index: ['@babel/polyfill', './src/scripts/index.js'],
+		'upload-page': ['@babel/polyfill', './src/scripts/upload-page.js'],
+		'dashboard-page': ['@babel/polyfill', './src/scripts/dashboard-page.js'],
+		'embed-page': ['@babel/polyfill', './src/scripts/embed-page.js'],
 	},
 	output: {
 		path: path.resolve(__root, 'dist'),
@@ -69,6 +72,23 @@ module.exports = {
 		]),
 		new HtmlWebpackPlugin({
 			template: './src/index.html',
+			filename: 'index.html',
+			chunks: ['index']
+		}),
+		new HtmlWebpackPlugin({
+			template: './src/pages/upload.html',
+			filename: 'upload.html',
+			chunks: ['upload-page']
+		}),
+		new HtmlWebpackPlugin({
+			template: './src/pages/dashboard.html',
+			filename: 'dashboard.html',
+			chunks: ['dashboard-page']
+		}),
+		new HtmlWebpackPlugin({
+			template: './src/pages/embed.html',
+			filename: 'embed.html',
+			chunks: ['embed-page']
 		}),
 		new webpack.ProvidePlugin({
 			'THREE': 'three'

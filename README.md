@@ -8,11 +8,27 @@ A tutorial demonstrating how to draw a large number of particles with Three.js a
 
 [Demo](https://tympanus.net/Tutorials/InteractiveParticles/)
 
+## New Features
+
+This enhanced version now includes:
+
+- **Upload Interface**: Upload your own images (JPG, PNG, WEBP, AVIF, HEIC) and transform them into interactive particle effects
+- **Management Dashboard**: View, manage, and organize all your uploaded particle images
+- **Embed System**: Get embeddable code for each particle effect to use on other websites
+- **Standalone Viewer**: Each particle effect gets its own unique URL for easy sharing
+- **Database Storage**: All images and metadata stored securely in Supabase
 
 ## Run
 - Install `npm install`
 - Run `npm start`
 - Build `npm run build`
+
+## Pages
+
+- `/` - Original demo with sample images
+- `/upload.html` - Upload your own images
+- `/dashboard.html` - Manage uploaded images
+- `/embed.html?code=<code>` - View individual particle effects
 
 ## Libraries
 - [ControlKit](https://github.com/brunoimbrizi/controlkit.js) - GUI
