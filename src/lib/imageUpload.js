@@ -108,3 +108,17 @@ export async function incrementViewCount(id) {
   const { error } = await supabase.rpc('increment_view_count', { image_id: id });
   if (error) console.error('Failed to increment view count:', error);
 }
+
+export async function updateParticleSettings(id, settings) {
+  const { error } = await supabase
+    .from('particle_images')
+    .update({
+      particle_size: settings.particle_size,
+      particle_depth: settings.particle_depth,
+      particle_random: settings.particle_random,
+      touch_radius: settings.touch_radius
+    })
+    .eq('id', id);
+
+  if (error) throw error;
+}

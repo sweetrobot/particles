@@ -1,4 +1,4 @@
-import { uploadImage } from '../lib/imageUpload';
+import { uploadImage, updateParticleSettings } from '../lib/imageUpload';
 
 const fileInput = document.getElementById('fileInput');
 const uploadArea = document.getElementById('uploadArea');
@@ -11,8 +11,18 @@ const copyBtn = document.getElementById('copyBtn');
 const viewLink = document.getElementById('viewLink');
 const uploadAnother = document.getElementById('uploadAnother');
 const loading = document.getElementById('loading');
+const particleSize = document.getElementById('particleSize');
+const particleSizeValue = document.getElementById('particleSizeValue');
+const particleDepth = document.getElementById('particleDepth');
+const particleDepthValue = document.getElementById('particleDepthValue');
+const particleRandom = document.getElementById('particleRandom');
+const particleRandomValue = document.getElementById('particleRandomValue');
+const touchRadius = document.getElementById('touchRadius');
+const touchRadiusValue = document.getElementById('touchRadiusValue');
+const saveSettings = document.getElementById('saveSettings');
 
 let selectedFile = null;
+let currentImageId = null;
 
 uploadArea.addEventListener('click', () => fileInput.click());
 
@@ -75,6 +85,22 @@ function handleFileSelect(file) {
   reader.readAsDataURL(file);
 }
 
+particleSize.addEventListener('input', (e) => {
+  particleSizeValue.textContent = e.target.value;
+});
+
+particleDepth.addEventListener('input', (e) => {
+  particleDepthValue.textContent = e.target.value;
+});
+
+particleRandom.addEventListener('input', (e) => {
+  particleRandomValue.textContent = e.target.value;
+});
+
+touchRadius.addEventListener('input', (e) => {
+  touchRadiusValue.textContent = e.target.value;
+});
+
 uploadBtn.addEventListener('click', async () => {
   if (!selectedFile) return;
 
@@ -83,6 +109,7 @@ uploadBtn.addEventListener('click', async () => {
 
   try {
     const result = await uploadImage(selectedFile);
+    currentImageId = result.id;
 
     const embedUrl = `${window.location.origin}/embed.html?code=${result.embed_code}`;
     const embedCodeText = `<iframe src="${embedUrl}" width="800" height="600" frameborder="0" allowfullscreen></iframe>`;
@@ -109,10 +136,47 @@ copyBtn.addEventListener('click', () => {
   }, 2000);
 });
 
+saveSettings.addEventListener('click', async () => {
+  if (!currentImageId) return;
+
+  saveSettings.disabled = true;
+  saveSettings.textContent = 'Saving...';
+
+  try {
+    await updateParticleSettings(currentImageId, {
+      particle_size: parseFloat(particleSize.value),
+      particle_depth: parseFloat(particleDepth.value),
+      particle_random: parseFloat(particleRandom.value),
+      touch_radius: parseFloat(touchRadius.value)
+    });
+
+    saveSettings.textContent = 'Saved!';
+    setTimeout(() => {
+      saveSettings.textContent = 'Save Settings';
+      saveSettings.disabled = false;
+    }, 2000);
+  } catch (error) {
+    console.error('Failed to save settings:', error);
+    alert('Failed to save settings. Please try again.');
+    saveSettings.textContent = 'Save Settings';
+    saveSettings.disabled = false;
+  }
+});
+
 uploadAnother.addEventListener('click', () => {
   selectedFile = null;
+  currentImageId = null;
   fileInput.value = '';
   previewImage.src = '';
   successSection.style.display = 'none';
   uploadArea.style.display = 'flex';
+
+  particleSize.value = 1.5;
+  particleSizeValue.textContent = '1.5';
+  particleDepth.value = 4.0;
+  particleDepthValue.textContent = '4.0';
+  particleRandom.value = 2.0;
+  particleRandomValue.textContent = '2.0';
+  touchRadius.value = 0.15;
+  touchRadiusValue.textContent = '0.15';
 });

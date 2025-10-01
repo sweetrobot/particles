@@ -4,9 +4,15 @@ import InteractiveControls from './webgl/controls/InteractiveControls';
 import Particles from './webgl/particles/Particles';
 
 export default class ParticleRenderer {
-  constructor(container, imageUrl) {
+  constructor(container, imageUrl, settings = {}) {
     this.container = container;
     this.imageUrl = imageUrl;
+    this.settings = {
+      particleSize: settings.particle_size || 1.5,
+      particleDepth: settings.particle_depth || 4.0,
+      particleRandom: settings.particle_random || 2.0,
+      touchRadius: settings.touch_radius || 0.15
+    };
     this.initThree();
     this.initParticles();
     this.initControls();
@@ -44,7 +50,7 @@ export default class ParticleRenderer {
 
   loadImage() {
     if (this.particles) {
-      this.particles.init(this.imageUrl);
+      this.particles.init(this.imageUrl, this.settings);
     }
   }
 

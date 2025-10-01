@@ -48,6 +48,33 @@
           <h3>Upload Successful!</h3>
           <p>Your particle effect has been created</p>
 
+          <div class="particle-controls-section">
+            <h4>Particle Settings</h4>
+            <p class="controls-subtitle">Customize the particle effect behavior</p>
+
+            <div class="control-group">
+              <label for="particleSize">Particle Size: <span id="particleSizeValue">1.5</span></label>
+              <input type="range" id="particleSize" min="0" max="3" step="0.1" value="1.5" class="slider">
+            </div>
+
+            <div class="control-group">
+              <label for="particleDepth">Depth: <span id="particleDepthValue">4.0</span></label>
+              <input type="range" id="particleDepth" min="1" max="10" step="0.1" value="4.0" class="slider">
+            </div>
+
+            <div class="control-group">
+              <label for="particleRandom">Randomness: <span id="particleRandomValue">2.0</span></label>
+              <input type="range" id="particleRandom" min="1" max="10" step="0.1" value="2.0" class="slider">
+            </div>
+
+            <div class="control-group">
+              <label for="touchRadius">Touch Radius: <span id="touchRadiusValue">0.15</span></label>
+              <input type="range" id="touchRadius" min="0" max="0.5" step="0.01" value="0.15" class="slider">
+            </div>
+
+            <button id="saveSettings" class="btn btn-secondary">Save Settings</button>
+          </div>
+
           <div class="embed-code-section">
             <h4>Embed Code</h4>
             <textarea id="embedCode" class="embed-code" readonly></textarea>

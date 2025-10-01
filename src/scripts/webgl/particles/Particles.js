@@ -11,7 +11,14 @@ export default class Particles {
 		this.container = new THREE.Object3D();
 	}
 
-	init(src) {
+	init(src, settings = {}) {
+		this.settings = {
+			particleSize: settings.particleSize || 1.5,
+			particleDepth: settings.particleDepth || 4.0,
+			particleRandom: settings.particleRandom || 2.0,
+			touchRadius: settings.touchRadius || 0.15
+		};
+
 		const loader = new THREE.TextureLoader();
 
 		console.log('Loading texture from:', src);
@@ -79,9 +86,9 @@ export default class Particles {
 
 		const uniforms = {
 			uTime: { value: 0 },
-			uRandom: { value: 1.0 },
-			uDepth: { value: 2.0 },
-			uSize: { value: 0.0 },
+			uRandom: { value: this.settings.particleRandom },
+			uDepth: { value: this.settings.particleDepth },
+			uSize: { value: this.settings.particleSize },
 			uTextureSize: { value: new THREE.Vector2(this.width, this.height) },
 			uTexture: { value: this.texture },
 			uTouch: { value: null },
@@ -143,8 +150,8 @@ export default class Particles {
 	}
 
 	initTouch() {
-		// create only once
 		if (!this.touch) this.touch = new TouchTexture(this);
+		this.touch.radius = this.settings.touchRadius;
 		this.object3D.material.uniforms.uTouch.value = this.touch.texture;
 	}
 
@@ -184,10 +191,9 @@ export default class Particles {
 	}
 
 	show(time = 1.0) {
-		// reset
-		TweenLite.fromTo(this.object3D.material.uniforms.uSize, time, { value: 0.5 }, { value: 1.5 });
-		TweenLite.to(this.object3D.material.uniforms.uRandom, time, { value: 2.0 });
-		TweenLite.fromTo(this.object3D.material.uniforms.uDepth, time * 1.5, { value: 40.0 }, { value: 4.0 });
+		TweenLite.fromTo(this.object3D.material.uniforms.uSize, time, { value: 0.5 }, { value: this.settings.particleSize });
+		TweenLite.to(this.object3D.material.uniforms.uRandom, time, { value: this.settings.particleRandom });
+		TweenLite.fromTo(this.object3D.material.uniforms.uDepth, time * 1.5, { value: 40.0 }, { value: this.settings.particleDepth });
 
 		this.addListeners();
 	}
